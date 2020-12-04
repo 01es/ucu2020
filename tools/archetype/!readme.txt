@@ -49,7 +49,7 @@ mvn eclipse:eclipse -DdownloadJavadoc -DdownloadSources
 
 Eclipse launch configurations for a typical TG-based app can be created using the following instructions.
 The VM arguments are required for db population, the app server and for running unit tests.
-If you are using demo project "Helsinki Airport", you can simply import the launch configurations from subfolder "launch-configurations".
+If you are using demo project "Helsinki Airport", you can simply import the launch configurations from folder "../eclipse/launch-configurations".
 
 # Eclipse run config to populate domain
 Project: airport-web-server

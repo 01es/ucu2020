@@ -1,4 +1,7 @@
-This folder contains the TG plugin for Eclipse.
+This folder contains 3 subfolder.
+
+1. plugin -- a fodler with the TG plugin for Eclipse.
+
 This plugin is used to assist with generation of domain models and UI.
 
 There are two jar files:
@@ -14,3 +17,9 @@ Under macOS, Eclipse IDE is distributed as the "Eclipse.app" package. Folder "dr
 In order to copy the plugin files to "dropins", you need to pen Eclipse.app with option "Show Package Contents" in Finder.
 This way you will be able to access folder "Contents/Eclipse/dropins" and copy the plugin files there.
 As per earlier remark, you need to remove the previous plugin jar file in case you're updating the TG plugin.
+
+2. launch-configurations -- contains Eclipse Launch configurations for standard demo application "Helsinki Airport".
+
+These configuration can be imported into Eclipse IDE using the import functionality.
+
+3. code-templates -- contains code templates to streamline creating and modifications of entity models when working with TG.
