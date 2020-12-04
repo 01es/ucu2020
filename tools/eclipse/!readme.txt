@@ -1,6 +1,6 @@
 This folder contains 3 subfolder.
 
-1. plugin -- a fodler with the TG plugin for Eclipse.
+1. plugin -- a folder with the TG plugin for Eclipse.
 
 This plugin is used to assist with generation of domain models and UI.
 
