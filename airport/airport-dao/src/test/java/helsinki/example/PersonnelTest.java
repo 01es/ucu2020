@@ -11,12 +11,15 @@ import java.math.BigDecimal;
 import org.junit.Test;
 
 import ua.com.fielden.platform.dao.QueryExecutionModel;
+import ua.com.fielden.platform.entity.meta.MetaProperty;
 import ua.com.fielden.platform.entity.query.fluent.fetch;
 import ua.com.fielden.platform.entity.query.model.EntityResultQueryModel;
 import ua.com.fielden.platform.entity.query.model.OrderingModel;
 import ua.com.fielden.platform.security.user.User;
 import ua.com.fielden.platform.utils.IUniversalConstants;
 import helsinki.personnel.Person;
+import helsinki.personnel.PersonCo;
+import helsinki.personnel.validators.PersonInitialsValidator;
 import helsinki.test_config.AbstractDaoTestCase;
 import helsinki.test_config.UniversalConstantsForTesting;
 
@@ -47,6 +50,36 @@ public class PersonnelTest extends AbstractDaoTestCase {
         final Person person = co(Person.class).findByKey("JC");
         assertNotNull(person);
         assertFalse(person.isActive());
+    }
+
+    @Test
+    public void initials_do_not_permit_spaces() {
+    	final Person person = co$(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD");
+    	assertNotNull(person);
+    	assertTrue(person.isValid().isSuccessful());
+    	
+    	person.setInitials("R MD");
+    	assertFalse(person.isValid().isSuccessful());
+    	
+    	final MetaProperty<String> mp = person.getProperty("initials");
+    	assertFalse(mp.isValid());
+    	assertEquals(PersonInitialsValidator.ERR_NO_SPACES_PERMITTED, mp.getFirstFailure().getMessage());
+    	assertEquals("R MD", mp.getLastAttemptedValue());
+    	assertEquals("R MD", mp.getLastInvalidValue());
+    	assertEquals("RMD", mp.getValue());
+    	assertEquals("RMD", person.getInitials());
+    	
+    	assertFalse(mp.isDirty());
+    	
+    	person.setInitials("RMD1");
+    	assertTrue(person.isValid().isSuccessful());
+    	
+    	assertTrue(mp.isDirty());
+    }
+
+    @Test
+    public void too_short_values_for_initials_result_in_warnings() {
+
     }
 
     /**
