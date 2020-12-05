@@ -99,7 +99,7 @@ public class PersonDao extends CommonEntityDao<Person> implements PersonCo {
         final String email = person.getEmail();
         final boolean active = email != null; // i.e. only make a user active if the email is not null
         final IUser co$User = co$(User.class);
-        final User user = co$User.new_().setKey(person.getKey()).setEmail(email).setActive(active);
+        final User user = co$User.new_().setKey(person.getInitials()).setEmail(email).setActive(active);
         user.setDesc(format("User for person [%s].", person.getDesc()));
         final User su = co$User.findByKeyAndFetch(fetchAll(User.class), User.system_users.SU.name());
         if (su != null) {

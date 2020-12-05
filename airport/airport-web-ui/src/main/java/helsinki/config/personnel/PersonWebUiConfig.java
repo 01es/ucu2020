@@ -114,7 +114,7 @@ public class PersonWebUiConfig {
 
         final IMaster<Person> masterConfig = new SimpleMasterBuilder<Person>().forEntity(Person.class)
                 // row 1
-                .addProp("key").asSinglelineText().also()
+                .addProp("initials").asSinglelineText().also()
                 .addProp("active").asCheckbox().also()
                 // row 2
                 .addProp("desc").asMultilineText().also()

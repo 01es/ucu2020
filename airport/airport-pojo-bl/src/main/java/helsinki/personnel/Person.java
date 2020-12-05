@@ -1,8 +1,11 @@
 package helsinki.personnel;
 
+import helsinki.personnel.validators.PersonInitialsValidator;
 import helsinki.security.tokens.persistent.Person_CanModify_user_Token;
 import ua.com.fielden.platform.entity.ActivatableAbstractEntity;
+import ua.com.fielden.platform.entity.DynamicEntityKey;
 import ua.com.fielden.platform.entity.annotation.CompanionObject;
+import ua.com.fielden.platform.entity.annotation.CompositeKeyMember;
 import ua.com.fielden.platform.entity.annotation.DescRequired;
 import ua.com.fielden.platform.entity.annotation.DescTitle;
 import ua.com.fielden.platform.entity.annotation.DisplayDescription;
@@ -18,9 +21,9 @@ import ua.com.fielden.platform.entity.annotation.Unique;
 import ua.com.fielden.platform.entity.annotation.mutator.BeforeChange;
 import ua.com.fielden.platform.entity.annotation.mutator.Handler;
 import ua.com.fielden.platform.property.validator.EmailValidator;
+import ua.com.fielden.platform.reflection.TitlesDescsGetter;
 import ua.com.fielden.platform.security.Authorise;
 import ua.com.fielden.platform.security.user.User;
-import ua.com.fielden.platform.reflection.TitlesDescsGetter;
 import ua.com.fielden.platform.utils.Pair;
 
 /**
@@ -29,18 +32,25 @@ import ua.com.fielden.platform.utils.Pair;
  * @author Generated
  *
  */
-@KeyType(String.class)
+@KeyType(DynamicEntityKey.class)
 @KeyTitle(value = "Initials", desc = "Person's initials, must represent the person uniquely - e.g. a number may be required if there are many people with the same initials.")
 @DescTitle(value = "Full Name", desc = "Person's full name - e.g. the first name followed by the middle initial followed by the surname.")
 @MapEntityTo
 @CompanionObject(PersonCo.class)
 @DescRequired
 @DisplayDescription
-public class Person extends ActivatableAbstractEntity<String> {
+public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 
     private static final Pair<String, String> entityTitleAndDesc = TitlesDescsGetter.getEntityTitleAndDesc(Person.class);
     public static final String ENTITY_TITLE = entityTitleAndDesc.getKey();
     public static final String ENTITY_DESC = entityTitleAndDesc.getValue();
+
+    @IsProperty
+	@MapTo
+	@Title(value = "Initials", desc = "Desc")
+	@CompositeKeyMember(1)
+    @BeforeChange(@Handler(PersonInitialsValidator.class))
+	private String initials;
 
     @IsProperty
     @Unique
@@ -153,5 +163,15 @@ public class Person extends ActivatableAbstractEntity<String> {
     public boolean isAUser() {
         return getUser() != null;
     }
+
+	@Observable
+	public Person setInitials(final String initials) {
+		this.initials = initials;
+		return this;
+	}
+
+	public String getInitials() {
+		return initials;
+	}
 
 }

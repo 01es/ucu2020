@@ -83,7 +83,7 @@ public class PopulateDb extends DomainDrivenDataPopulation {
 
     private void setupPerson(final User.system_users defaultUser, final String emailDomain) {
         final User su = co(User.class).findByKey(defaultUser.name());
-        save(new_(Person.class, defaultUser.name()).setActive(true).setUser(su).setDesc("Person who is a user").setEmail(defaultUser + "@" + emailDomain));
+        save(new_(Person.class).setInitials(defaultUser.name()).setActive(true).setUser(su).setDesc("Person who is a user").setEmail(defaultUser + "@" + emailDomain));
     }
 
     @Override

@@ -97,8 +97,8 @@ public class PersonnelTest extends AbstractDaoTestCase {
         }
 
     	// Here the three Person entities are persisted using the the inherited from TG testing framework methods.
-        save(new_(Person.class, "RMD", "Ronald McDonald").setActive(true));
-        save(new_(Person.class, "JC", "John Carmack").setActive(false));
+        save(new_(Person.class).setInitials("RMD").setDesc("Ronald McDonald").setActive(true));
+        save(new_(Person.class).setInitials("JC").setDesc("John Carmack").setActive(false));
     }
 
 }
