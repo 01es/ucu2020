@@ -53,6 +53,16 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 	private String initials;
 
     @IsProperty
+	@MapTo
+	@Title(value = "Supervisor?", desc = "Indicates personnel in the supervisor role.")
+	private boolean supervisor;
+
+    @IsProperty
+	@MapTo
+	@Title(value = "Supervisor", desc = "A supervisor for the employee.")
+	private Person aSupervisor;
+
+    @IsProperty
     @Unique
     @MapTo
     @Title(value = "User", desc = "An application user associated with the current person.")
@@ -172,6 +182,26 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 
 	public String getInitials() {
 		return initials;
+	}
+
+	@Observable
+	public Person setSupervisor(final boolean supervisor) {
+		this.supervisor = supervisor;
+		return this;
+	}
+
+	public boolean isSupervisor() {
+		return supervisor;
+	}
+
+	@Observable
+	public Person setASupervisor(final Person aSupervisor) {
+		this.aSupervisor = aSupervisor;
+		return this;
+	}
+
+	public Person getASupervisor() {
+		return aSupervisor;
 	}
 
 }
