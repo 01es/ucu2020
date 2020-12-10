@@ -113,6 +113,24 @@ public class PersonnelTest extends AbstractDaoTestCase {
     	assertEquals("A", savedPerson2.getInitials());
     }
 
+    @Test
+    public void chaning_the_same_properties_of_person_concurrently_results_if_failure_for_the_later_transaction() {
+    	final Person person1 = co$(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD");
+    	final Person person2 = co$(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD");
+    	assertEquals(Long.valueOf(0L), person1.getVersion());
+    	assertEquals(Long.valueOf(0L), person2.getVersion());
+    	
+    	final Person savedPerson1 = save(person1.setInitials("A"));
+    	assertEquals(Long.valueOf(1L), savedPerson1.getVersion());
+
+    	try {
+    		save(person2.setInitials("B	"));
+    		fail("Conflicting change should not have been resolved.");
+    	} catch (final Exception ex) {
+    		ex.printStackTrace();
+    	}
+    }
+
     /**
      * In case of a complex data population it is possible to store the data into a script by changing this method to return <code>true</code>.
      * <p>
