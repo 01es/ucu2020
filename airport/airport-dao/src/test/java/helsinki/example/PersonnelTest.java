@@ -58,10 +58,13 @@ public class PersonnelTest extends AbstractDaoTestCase {
     	assertNotNull(person);
     	assertTrue(person.isValid().isSuccessful());
     	
+    	assertEquals("RMD", person.getInitials());
+    	
     	person.setInitials("R MD");
     	assertFalse(person.isValid().isSuccessful());
     	
     	final MetaProperty<String> mp = person.getProperty("initials");
+    	assertEquals(person, mp.getEntity());
     	assertFalse(mp.isValid());
     	assertEquals(PersonInitialsValidator.ERR_NO_SPACES_PERMITTED, mp.getFirstFailure().getMessage());
     	assertEquals("R MD", mp.getLastAttemptedValue());
@@ -79,7 +82,20 @@ public class PersonnelTest extends AbstractDaoTestCase {
 
     @Test
     public void too_short_values_for_initials_result_in_warnings() {
-
+    	final Person person = co$(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD");
+    	assertEquals(Long.valueOf(0L), person.getVersion());
+    	
+    	person.setInitials("A");
+    	final MetaProperty<String> mp = person.getProperty("initials");
+    	assertTrue(mp.isValid());
+    	assertEquals("A", mp.getValue());
+    	assertEquals("A", person.getInitials());
+    	assertNotNull(mp.getFirstWarning());
+    	assertEquals(PersonInitialsValidator.WARN_TOO_SHORT, mp.getFirstWarning().getMessage());
+    	
+    	final Person savedPerson = save(person);
+    	assertEquals(Long.valueOf(1L), savedPerson.getVersion());
+    	assertEquals("A", savedPerson.getInitials());
     }
 
     /**
@@ -104,7 +120,7 @@ public class PersonnelTest extends AbstractDaoTestCase {
      */
     @Override
     public boolean useSavedDataPopulationScript() {
-        return false;
+        return true;
     }
 
     /**
