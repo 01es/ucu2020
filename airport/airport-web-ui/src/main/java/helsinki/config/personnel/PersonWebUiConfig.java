@@ -63,8 +63,9 @@ public class PersonWebUiConfig {
      */
     private EntityCentre<Person> createPersonCentre(final IWebUiBuilder builder) {
         final String layout = cell(
-                cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))  // row 1 -> 1, 2
-               .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)), // row 2 -> 3, 4
+                cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
+               .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
+               .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)),
                PADDING_LAYOUT).toString();
 
         final EntityActionConfig standardNewAction = StandardActions.NEW_ACTION.mkAction(Person.class);
@@ -83,6 +84,9 @@ public class PersonWebUiConfig {
                 .addCrit("this").asMulti().autocompleter(Person.class).also()
                 .addCrit("desc").asMulti().text().also()
                 // row 2
+                .addCrit("aSupervisor").asMulti().autocompleter(Person.class).also()
+                .addCrit("supervisor").asMulti().bool().also()
+                // row 3
                 .addCrit("employeeNo").asMulti().text().also()
                 .addCrit("title").asMulti().text()
                 .setLayoutFor(Device.DESKTOP, Optional.empty(), layout)
@@ -92,8 +96,10 @@ public class PersonWebUiConfig {
                     .withSummary("total_count_", "COUNT(SELF)", "Count:The total number of matching Person.")
                     .withAction(standardEditAction).also()
                 .addProp("desc").minWidth(200).also()
-                .addProp("title").minWidth(200).also()
                 .addProp("employeeNo").minWidth(70).also()
+                .addProp("title").minWidth(200).also()
+                .addProp("aSupervisor").minWidth(70).also()
+                .addProp("supervisor").minWidth(70).also()
                 .addProp("phone").minWidth(70).also()
                 .addProp("mobile").minWidth(70).also()
                 .addProp("email").minWidth(70)
@@ -109,6 +115,7 @@ public class PersonWebUiConfig {
                .cell(cell().layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
                .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
                .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
+               .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
                .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)),
                PADDING_LAYOUT).toString();
 
@@ -122,9 +129,12 @@ public class PersonWebUiConfig {
                 .addProp("employeeNo").asSinglelineText().also()
                 .addProp("title").asSinglelineText().also()
                 // row 4
+                .addProp("aSupervisor").asAutocompleter().also()
+                .addProp("supervisor").asCheckbox().also()
+                // row 5
                 .addProp("phone").asSinglelineText().also()
                 .addProp("mobile").asSinglelineText().also()
-                // row 5
+                // row 6
                 .addProp("email").asSinglelineText().also()
                 .addProp("user").asAutocompleter().also()
                 .addAction(MasterActions.REFRESH).shortDesc(MASTER_CANCEL_ACTION_SHORT_DESC).longDesc(MASTER_CANCEL_ACTION_LONG_DESC)
