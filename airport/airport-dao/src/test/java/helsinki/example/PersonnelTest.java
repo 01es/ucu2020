@@ -98,6 +98,21 @@ public class PersonnelTest extends AbstractDaoTestCase {
     	assertEquals("A", savedPerson.getInitials());
     }
 
+    @Test
+    public void chaning_different_properties_of_person_concurrently_is_resolved_automatically() {
+    	final Person person1 = co$(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD");
+    	final Person person2 = co$(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD");
+    	assertEquals(Long.valueOf(0L), person1.getVersion());
+    	assertEquals(Long.valueOf(0L), person2.getVersion());
+    	
+    	final Person savedPerson1 = save(person1.setInitials("A"));
+    	assertEquals(Long.valueOf(1L), savedPerson1.getVersion());
+    	
+    	final Person savedPerson2 = save(person2.setEmployeeNo("SDRT123").setInitials("A"));
+    	assertEquals(Long.valueOf(2L), savedPerson2.getVersion());
+    	assertEquals("A", savedPerson2.getInitials());
+    }
+
     /**
      * In case of a complex data population it is possible to store the data into a script by changing this method to return <code>true</code>.
      * <p>
