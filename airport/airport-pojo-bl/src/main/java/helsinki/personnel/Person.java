@@ -1,5 +1,6 @@
 package helsinki.personnel;
 
+import helsinki.personnel.definers.PersonEmployeeNoDefiner;
 import helsinki.personnel.validators.PersonInitialsValidator;
 import helsinki.security.tokens.persistent.Person_CanModify_user_Token;
 import ua.com.fielden.platform.entity.ActivatableAbstractEntity;
@@ -18,6 +19,7 @@ import ua.com.fielden.platform.entity.annotation.Observable;
 import ua.com.fielden.platform.entity.annotation.SkipEntityExistsValidation;
 import ua.com.fielden.platform.entity.annotation.Title;
 import ua.com.fielden.platform.entity.annotation.Unique;
+import ua.com.fielden.platform.entity.annotation.mutator.AfterChange;
 import ua.com.fielden.platform.entity.annotation.mutator.BeforeChange;
 import ua.com.fielden.platform.entity.annotation.mutator.Handler;
 import ua.com.fielden.platform.property.validator.EmailValidator;
@@ -49,7 +51,7 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 	@MapTo
 	@Title(value = "Initials", desc = "Desc")
 	@CompositeKeyMember(1)
-    @BeforeChange(@Handler(PersonInitialsValidator.class))
+    @BeforeChange({@Handler(PersonInitialsValidator.class)})
 	private String initials;
 
     @IsProperty
@@ -77,6 +79,7 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
     @IsProperty
     @MapTo
     @Title("Employee No")
+    @AfterChange(PersonEmployeeNoDefiner.class)
     private String employeeNo;
 
     @IsProperty
