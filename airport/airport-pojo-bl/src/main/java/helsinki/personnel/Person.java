@@ -66,7 +66,7 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 	@MapTo
 	@Title(value = "Supervisor", desc = "A supervisor for the employee.")
     @BeforeChange({@Handler(PersonSupervisorValidator.class)})
-	private Person aSupervisor;
+	private Supervisor aSupervisor;
 
     @IsProperty
     @Unique
@@ -203,12 +203,12 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 	}
 
 	@Observable
-	public Person setASupervisor(final Person aSupervisor) {
+	public Person setASupervisor(final Supervisor aSupervisor) {
 		this.aSupervisor = aSupervisor;
 		return this;
 	}
 
-	public Person getASupervisor() {
+	public Supervisor getASupervisor() {
 		return aSupervisor;
 	}
 
