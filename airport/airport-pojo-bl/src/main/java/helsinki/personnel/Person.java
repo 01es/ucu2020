@@ -1,12 +1,14 @@
 package helsinki.personnel;
 
-import helsinki.personnel.definers.PersonEmployeeNoDefiner;
+import helsinki.personnel.definers.PersonRequirendessForSupervisorDefiner;
 import helsinki.personnel.validators.PersonInitialsValidator;
+import helsinki.personnel.validators.PersonSupervisorValidator;
 import helsinki.security.tokens.persistent.Person_CanModify_user_Token;
 import ua.com.fielden.platform.entity.ActivatableAbstractEntity;
 import ua.com.fielden.platform.entity.DynamicEntityKey;
 import ua.com.fielden.platform.entity.annotation.CompanionObject;
 import ua.com.fielden.platform.entity.annotation.CompositeKeyMember;
+import ua.com.fielden.platform.entity.annotation.Dependent;
 import ua.com.fielden.platform.entity.annotation.DescRequired;
 import ua.com.fielden.platform.entity.annotation.DescTitle;
 import ua.com.fielden.platform.entity.annotation.DisplayDescription;
@@ -57,11 +59,13 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
     @IsProperty
 	@MapTo
 	@Title(value = "Supervisor?", desc = "Indicates personnel in the supervisor role.")
+    @AfterChange(PersonRequirendessForSupervisorDefiner.class)
 	private boolean supervisor;
 
     @IsProperty
 	@MapTo
 	@Title(value = "Supervisor", desc = "A supervisor for the employee.")
+    @BeforeChange({@Handler(PersonSupervisorValidator.class)})
 	private Person aSupervisor;
 
     @IsProperty
@@ -79,7 +83,8 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
     @IsProperty
     @MapTo
     @Title("Employee No")
-    @AfterChange(PersonEmployeeNoDefiner.class)
+    @AfterChange(PersonRequirendessForSupervisorDefiner.class)
+    @Dependent({"aSupervisor"})
     private String employeeNo;
 
     @IsProperty

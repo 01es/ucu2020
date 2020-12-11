@@ -132,7 +132,7 @@ public class PersonnelTest extends AbstractDaoTestCase {
     }
 
     @Test
-    public void employees_have_supervisor_required() {
+    public void employees_must_have_supervisor_assigned_but_not_for_supervisors() {
     	final Person person = co$(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD");
     	final MetaProperty<Person> mpASupervisor = person.getProperty("aSupervisor");
     	assertFalse(mpASupervisor.isRequired());
@@ -141,6 +141,11 @@ public class PersonnelTest extends AbstractDaoTestCase {
     	assertTrue(mpASupervisor.isRequired());
     	
     	person.setEmployeeNo(null);
+    	assertFalse(mpASupervisor.isRequired());
+    	
+    	person.setEmployeeNo("SOME NUMBER");
+    	assertTrue(mpASupervisor.isRequired());
+    	person.setSupervisor(true);
     	assertFalse(mpASupervisor.isRequired());
     }
 

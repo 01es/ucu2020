@@ -6,12 +6,12 @@ import helsinki.personnel.Person;
 import ua.com.fielden.platform.entity.meta.MetaProperty;
 import ua.com.fielden.platform.entity.meta.impl.AbstractAfterChangeEventHandler;
 
-public class PersonEmployeeNoDefiner extends AbstractAfterChangeEventHandler<String> {
+public class PersonRequirendessForSupervisorDefiner extends AbstractAfterChangeEventHandler<Object> {
 
 	@Override
-	public void handle(final MetaProperty<String> property, final String value) {
+	public void handle(final MetaProperty<Object> property, final Object value) {
 		final Person person = property.getEntity();
-		person.getProperty("aSupervisor").setRequired(!StringUtils.isEmpty(value));
+		person.getProperty("aSupervisor").setRequired(!StringUtils.isEmpty(person.getEmployeeNo()) && !person.isSupervisor());
 	}
 
 }
