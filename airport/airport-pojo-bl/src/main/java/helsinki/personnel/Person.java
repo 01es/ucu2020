@@ -1,11 +1,14 @@
 package helsinki.personnel;
 
+import helsinki.personnel.definers.PersonRequirendessForSupervisorDefiner;
 import helsinki.personnel.validators.PersonInitialsValidator;
+import helsinki.personnel.validators.PersonSupervisorValidator;
 import helsinki.security.tokens.persistent.Person_CanModify_user_Token;
 import ua.com.fielden.platform.entity.ActivatableAbstractEntity;
 import ua.com.fielden.platform.entity.DynamicEntityKey;
 import ua.com.fielden.platform.entity.annotation.CompanionObject;
 import ua.com.fielden.platform.entity.annotation.CompositeKeyMember;
+import ua.com.fielden.platform.entity.annotation.Dependent;
 import ua.com.fielden.platform.entity.annotation.DescRequired;
 import ua.com.fielden.platform.entity.annotation.DescTitle;
 import ua.com.fielden.platform.entity.annotation.DisplayDescription;
@@ -18,6 +21,7 @@ import ua.com.fielden.platform.entity.annotation.Observable;
 import ua.com.fielden.platform.entity.annotation.SkipEntityExistsValidation;
 import ua.com.fielden.platform.entity.annotation.Title;
 import ua.com.fielden.platform.entity.annotation.Unique;
+import ua.com.fielden.platform.entity.annotation.mutator.AfterChange;
 import ua.com.fielden.platform.entity.annotation.mutator.BeforeChange;
 import ua.com.fielden.platform.entity.annotation.mutator.Handler;
 import ua.com.fielden.platform.property.validator.EmailValidator;
@@ -49,8 +53,20 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 	@MapTo
 	@Title(value = "Initials", desc = "Desc")
 	@CompositeKeyMember(1)
-    @BeforeChange(@Handler(PersonInitialsValidator.class))
+    @BeforeChange({@Handler(PersonInitialsValidator.class)})
 	private String initials;
+
+    @IsProperty
+	@MapTo
+	@Title(value = "Supervisor?", desc = "Indicates personnel in the supervisor role.")
+    @AfterChange(PersonRequirendessForSupervisorDefiner.class)
+	private boolean supervisor;
+
+    @IsProperty
+	@MapTo
+	@Title(value = "Supervisor", desc = "A supervisor for the employee.")
+    @BeforeChange({@Handler(PersonSupervisorValidator.class)})
+	private Supervisor aSupervisor;
 
     @IsProperty
     @Unique
@@ -67,6 +83,8 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
     @IsProperty
     @MapTo
     @Title("Employee No")
+    @AfterChange(PersonRequirendessForSupervisorDefiner.class)
+    @Dependent({"aSupervisor"})
     private String employeeNo;
 
     @IsProperty
@@ -172,6 +190,26 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 
 	public String getInitials() {
 		return initials;
+	}
+
+	@Observable
+	public Person setSupervisor(final boolean supervisor) {
+		this.supervisor = supervisor;
+		return this;
+	}
+
+	public boolean isSupervisor() {
+		return supervisor;
+	}
+
+	@Observable
+	public Person setASupervisor(final Supervisor aSupervisor) {
+		this.aSupervisor = aSupervisor;
+		return this;
+	}
+
+	public Supervisor getASupervisor() {
+		return aSupervisor;
 	}
 
 }

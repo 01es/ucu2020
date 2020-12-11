@@ -108,7 +108,7 @@ public class PersonnelTest extends AbstractDaoTestCase {
     	final Person savedPerson1 = save(person1.setInitials("A"));
     	assertEquals(Long.valueOf(1L), savedPerson1.getVersion());
     	
-    	final Person savedPerson2 = save(person2.setEmployeeNo("SDRT123").setInitials("A"));
+    	final Person savedPerson2 = save(person2.setMobile("+614532340099").setInitials("A"));
     	assertEquals(Long.valueOf(2L), savedPerson2.getVersion());
     	assertEquals("A", savedPerson2.getInitials());
     }
@@ -124,11 +124,29 @@ public class PersonnelTest extends AbstractDaoTestCase {
     	assertEquals(Long.valueOf(1L), savedPerson1.getVersion());
 
     	try {
-    		save(person2.setInitials("B	"));
+    		save(person2.setInitials("B"));
     		fail("Conflicting change should not have been resolved.");
     	} catch (final Exception ex) {
     		ex.printStackTrace();
     	}
+    }
+
+    @Test
+    public void employees_must_have_supervisor_assigned_but_not_for_supervisors() {
+    	final Person person = co$(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD");
+    	final MetaProperty<Person> mpASupervisor = person.getProperty("aSupervisor");
+    	assertFalse(mpASupervisor.isRequired());
+    	
+    	person.setEmployeeNo("SOME NUMBER");
+    	assertTrue(mpASupervisor.isRequired());
+    	
+    	person.setEmployeeNo(null);
+    	assertFalse(mpASupervisor.isRequired());
+    	
+    	person.setEmployeeNo("SOME NUMBER");
+    	assertTrue(mpASupervisor.isRequired());
+    	person.setSupervisor(true);
+    	assertFalse(mpASupervisor.isRequired());
     }
 
     /**
@@ -139,7 +157,7 @@ public class PersonnelTest extends AbstractDaoTestCase {
      */
     @Override
     public boolean saveDataPopulationScriptToFile() {
-        return false;
+        return true;
     }
 
     /**
@@ -153,7 +171,7 @@ public class PersonnelTest extends AbstractDaoTestCase {
      */
     @Override
     public boolean useSavedDataPopulationScript() {
-        return true;
+        return false;
     }
 
     /**
