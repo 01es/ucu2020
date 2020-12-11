@@ -16,6 +16,7 @@ import com.google.inject.Injector;
 import helsinki.common.StandardActions;
 import helsinki.main.menu.personnel.MiPerson;
 import helsinki.personnel.Person;
+import helsinki.personnel.Supervisor;
 import ua.com.fielden.platform.web.app.config.IWebUiBuilder;
 import ua.com.fielden.platform.web.centre.EntityCentre;
 import ua.com.fielden.platform.web.centre.api.EntityCentreConfig;
@@ -84,7 +85,7 @@ public class PersonWebUiConfig {
                 .addCrit("this").asMulti().autocompleter(Person.class).also()
                 .addCrit("desc").asMulti().text().also()
                 // row 2
-                .addCrit("aSupervisor").asMulti().autocompleter(Person.class).also()
+                .addCrit("aSupervisor").asMulti().autocompleter(Supervisor.class).also()
                 .addCrit("supervisor").asMulti().bool().also()
                 // row 3
                 .addCrit("employeeNo").asMulti().text().also()

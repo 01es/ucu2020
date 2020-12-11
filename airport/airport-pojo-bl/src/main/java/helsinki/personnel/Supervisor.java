@@ -36,25 +36,26 @@ import ua.com.fielden.platform.utils.Pair;
 @MapEntityTo
 @DescTitle("Description")
 @DisplayDescription
-@DescRequired
 public class Supervisor extends ActivatableAbstractEntity<DynamicEntityKey> {
-    private static final Pair<String, String> entityTitleAndDesc = TitlesDescsGetter.getEntityTitleAndDesc(Supervisor.class);
-    public static final String ENTITY_TITLE = entityTitleAndDesc.getKey();
-    public static final String ENTITY_DESC = entityTitleAndDesc.getValue();
+	private static final Pair<String, String> entityTitleAndDesc = TitlesDescsGetter
+			.getEntityTitleAndDesc(Supervisor.class);
+	public static final String ENTITY_TITLE = entityTitleAndDesc.getKey();
+	public static final String ENTITY_DESC = entityTitleAndDesc.getValue();
 
-    @IsProperty
+	@IsProperty
 	@MapTo
 	@Title(value = "Person", desc = "Person that is in the supervisor role.")
 	@CompositeKeyMember(1)
 	private Person person;
-    
-    @IsProperty
+
+	@IsProperty
 	@Readonly
 	@Calculated
 	@Title(value = "Description", desc = "Desc")
 	private String desc;
 	protected static final ExpressionModel desc_ = expr().prop("person.desc").model();
 
+	@Override
 	@Observable
 	public Supervisor setDesc(final String desc) {
 		this.desc = desc;
@@ -75,4 +76,10 @@ public class Supervisor extends ActivatableAbstractEntity<DynamicEntityKey> {
 		return person;
 	}
 
+	@Override
+	@Observable
+	public Supervisor setActive(boolean active) {
+		super.setActive(active);
+		return this;
+	}
 }

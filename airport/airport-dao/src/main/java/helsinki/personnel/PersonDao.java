@@ -55,7 +55,26 @@ public class PersonDao extends CommonEntityDao<Person> implements PersonCo {
     @Authorise(Person_CanSave_Token.class)
     public Person save(final Person person) {
         person.isValid().ifFailure(Result::throwRuntime);
-        return super.save(person);
+        
+        final boolean wasSupervisorChanged = person.getProperty("supervisor").isDirty();
+        final Person savedPerson = super.save(person);
+        
+        if (wasSupervisorChanged) {
+        	final SupervisorCo co$ = co$(Supervisor.class);
+        	final Optional<Supervisor> maybeSupervisor = co$.findByKeyAndFetchOptional(co$.getFetchProvider().fetchModel(), savedPerson);
+        	
+        	if (savedPerson.isSupervisor()) {
+        		// find or create new supervisor and sync its active state
+        		final Supervisor supervisor = maybeSupervisor.orElseGet(() -> co$.new_().setPerson(savedPerson));
+        		co$.save(supervisor.setActive(savedPerson.isActive()));
+        	} else {
+        		// deactivate a corresponding supervisor instance
+        		maybeSupervisor.ifPresent(supervisor -> co$.save(supervisor.setActive(false)));
+        	}
+        	
+        }
+        
+        return savedPerson;
     }
 
     @Override
