@@ -13,6 +13,7 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 import org.apache.logging.log4j.Logger;
 
 import helsinki.config.ApplicationDomain;
+import helsinki.personnel.Employment;
 import helsinki.personnel.Person;
 
 import ua.com.fielden.platform.devdb_support.DomainDrivenDataPopulation;
@@ -20,6 +21,7 @@ import ua.com.fielden.platform.entity.AbstractEntity;
 import ua.com.fielden.platform.persistence.HibernateUtil;
 import ua.com.fielden.platform.security.user.User;
 import ua.com.fielden.platform.test.IDomainDrivenTestCaseConfiguration;
+import ua.com.fielden.platform.types.Money;
 import ua.com.fielden.platform.utils.DbUtils;
 
 /**
@@ -77,6 +79,12 @@ public class PopulateDb extends DomainDrivenDataPopulation {
         
         setupUser(User.system_users.SU, "helsinki");
         setupPerson(User.system_users.SU, "helsinki");
+
+        var rmd = save(new_(Person.class).setInitials("RMD").setDesc("Ronald McDonald").setActive(true));
+        save(new_(Employment.class).setContractNo("001").setEmployee(rmd).setStartDate(date("2019-01-01 00:00:00")).setFinishDate(date("2019-02-01 00:00:00")).setSalary(Money.of("5000.00")));
+        save(new_(Employment.class).setContractNo("002").setEmployee(rmd).setStartDate(date("2019-05-01 00:00:00")).setSalary(Money.of("5100.00")));
+        var jc = save(new_(Person.class).setInitials("JC").setDesc("John Carmack").setActive(true));
+        save(new_(Employment.class).setContractNo("003").setEmployee(jc).setStartDate(date("2019-09-01 00:00:00")).setSalary(Money.of("9100.00")));
 
         LOGGER.info("Completed database creation and population.");
 	}
