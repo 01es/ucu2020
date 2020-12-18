@@ -1,23 +1,8 @@
 package helsinki.example;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.cond;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.expr;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchAggregates;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchAll;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchAllAndInstrument;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchAllInclCalc;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchAllInclCalcAndInstrument;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchAndInstrument;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchIdOnly;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchKeyAndDescOnly;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchKeyAndDescOnlyAndInstrument;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchOnly;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetchOnlyAndInstrument;
 import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.from;
 import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.orderBy;
 import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.select;
@@ -32,14 +17,13 @@ import org.junit.Test;
 
 import helsinki.personnel.Employment;
 import helsinki.personnel.Person;
-import helsinki.personnel.PersonCo;
-import helsinki.personnel.validators.PersonInitialsValidator;
 import helsinki.test_config.AbstractDaoTestCase;
 import ua.com.fielden.platform.dao.QueryExecutionModel;
-import ua.com.fielden.platform.entity.meta.MetaProperty;
 import ua.com.fielden.platform.entity.query.fluent.fetch;
 import ua.com.fielden.platform.entity.query.model.EntityResultQueryModel;
 import ua.com.fielden.platform.entity.query.model.OrderingModel;
+import ua.com.fielden.platform.keygen.IKeyNumber;
+import ua.com.fielden.platform.keygen.KeyNumber;
 import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
 import ua.com.fielden.platform.types.Money;
 import ua.com.fielden.platform.utils.IUniversalConstants;
@@ -58,6 +42,14 @@ public class EmploymentTest extends AbstractDaoTestCase {
 	public void setUp() {
     	final UniversalConstantsForTesting constants = (UniversalConstantsForTesting) getInstance(IUniversalConstants.class);
 		constants.setNow(now);
+	}
+	
+	@Test
+	public void we_can_generate_numbers() {
+		final IKeyNumber coKeyNumber = co(KeyNumber.class);
+		assertEquals(Integer.valueOf(1), coKeyNumber.nextNumber("CONTRACT NO"));
+		assertEquals(Integer.valueOf(2), coKeyNumber.nextNumber("CONTRACT NO"));
+		assertEquals(Integer.valueOf(1), coKeyNumber.nextNumber("OTHER NO"));
 	}
 	
     @Test

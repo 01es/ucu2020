@@ -17,6 +17,7 @@ import ua.com.fielden.platform.entity.annotation.KeyType;
 import ua.com.fielden.platform.entity.annotation.MapEntityTo;
 import ua.com.fielden.platform.entity.annotation.MapTo;
 import ua.com.fielden.platform.entity.annotation.Observable;
+import ua.com.fielden.platform.entity.annotation.Readonly;
 import ua.com.fielden.platform.entity.annotation.Required;
 import ua.com.fielden.platform.entity.annotation.Title;
 import ua.com.fielden.platform.entity.validation.annotation.GeProperty;
@@ -48,6 +49,7 @@ public class Employment extends AbstractPersistentEntity<DynamicEntityKey> {
 	@MapTo
 	@Title(value = "Contract No", desc = "Contract number for this employment.")
 	@CompositeKeyMember(1)
+    @Readonly
 	private String contractNo;
 
     @IsProperty
