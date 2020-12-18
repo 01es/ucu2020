@@ -33,7 +33,7 @@ import ua.com.fielden.platform.utils.Pair;
  *
  */
 @KeyType(DynamicEntityKey.class)
-@KeyTitle("Key")
+@KeyTitle("Contract")
 @CompanionObject(EmploymentCo.class)
 @MapEntityTo
 @DescTitle("Description")
