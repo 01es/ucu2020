@@ -14,6 +14,8 @@ import ua.com.fielden.platform.entity.AbstractEntity;
 import ua.com.fielden.platform.entity.query.IFilter;
 import ua.com.fielden.platform.security.ServerAuthorisationModel;
 import ua.com.fielden.platform.serialisation.api.ISerialisationClassProvider;
+import ua.com.fielden.platform.utils.DefaultDates;
+import ua.com.fielden.platform.utils.DefaultUniversalConstants;
 import ua.com.fielden.platform.web.ioc.IBasicWebApplicationServerModule;
 
 /**
@@ -36,7 +38,7 @@ public class WebApplicationServerModule extends ApplicationServerModule implemen
             final Class<? extends ISerialisationClassProvider> serialisationClassProviderType,
             final Class<? extends IFilter> automaticDataFilterType,
             final Properties props) throws Exception {
-        super(defaultHibernateTypes, applicationDomainProvider, domainTypes, serialisationClassProviderType, automaticDataFilterType, ServerAuthorisationModel.class, props);
+        super(defaultHibernateTypes, applicationDomainProvider, domainTypes, serialisationClassProviderType, automaticDataFilterType, ServerAuthorisationModel.class, DefaultUniversalConstants.class, DefaultDates.class, props);
         this.domainName = props.getProperty("web.domain");
         this.port = Integer.valueOf(props.getProperty("port"));
         this.path = props.getProperty("web.path");

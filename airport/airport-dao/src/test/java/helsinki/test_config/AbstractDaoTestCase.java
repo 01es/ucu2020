@@ -5,14 +5,13 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.junit.runner.RunWith;
 
-import ua.com.fielden.platform.entity.AbstractEntity;
-import ua.com.fielden.platform.test.AbstractDomainDrivenTestCase;
-import ua.com.fielden.platform.utils.IUniversalConstants;
-import ua.com.fielden.platform.security.user.User;
-
 import helsinki.config.ApplicationDomain;
 import helsinki.personnel.Person;
-import helsinki.test_config.UniversalConstantsForTesting;
+import ua.com.fielden.platform.entity.AbstractEntity;
+import ua.com.fielden.platform.security.user.User;
+import ua.com.fielden.platform.test.AbstractDomainDrivenTestCase;
+import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
+import ua.com.fielden.platform.utils.IUniversalConstants;
 
 /**
  * This calss should be used as the base type for all domain-driven test cases. 
