@@ -1,27 +1,20 @@
 package helsinki.example;
 
-import static org.junit.Assert.*;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.fetch;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.from;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.orderBy;
-import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.select;
-
-import java.math.BigDecimal;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import ua.com.fielden.platform.dao.QueryExecutionModel;
-import ua.com.fielden.platform.entity.meta.MetaProperty;
-import ua.com.fielden.platform.entity.query.fluent.fetch;
-import ua.com.fielden.platform.entity.query.model.EntityResultQueryModel;
-import ua.com.fielden.platform.entity.query.model.OrderingModel;
-import ua.com.fielden.platform.security.user.User;
-import ua.com.fielden.platform.utils.IUniversalConstants;
 import helsinki.personnel.Person;
 import helsinki.personnel.PersonCo;
 import helsinki.personnel.validators.PersonInitialsValidator;
 import helsinki.test_config.AbstractDaoTestCase;
-import helsinki.test_config.UniversalConstantsForTesting;
+import ua.com.fielden.platform.entity.meta.MetaProperty;
+import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
+import ua.com.fielden.platform.utils.IUniversalConstants;
 
 /**
  * This is an example unit test, which can be used as a starting point for creating application unit tests.
