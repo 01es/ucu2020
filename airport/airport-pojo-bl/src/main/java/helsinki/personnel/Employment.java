@@ -6,6 +6,7 @@ import ua.com.fielden.platform.entity.AbstractPersistentEntity;
 import ua.com.fielden.platform.entity.DynamicEntityKey;
 import ua.com.fielden.platform.entity.annotation.CompanionObject;
 import ua.com.fielden.platform.entity.annotation.CompositeKeyMember;
+import ua.com.fielden.platform.entity.annotation.DateOnly;
 import ua.com.fielden.platform.entity.annotation.Dependent;
 import ua.com.fielden.platform.entity.annotation.DescRequired;
 import ua.com.fielden.platform.entity.annotation.DescTitle;
@@ -60,12 +61,14 @@ public class Employment extends AbstractPersistentEntity<DynamicEntityKey> {
 	@Dependent("finishDate")
 	@Title(value = "Start Date", desc = "The start of the employment period.")
     @Required
+    @DateOnly
 	private Date startDate;
 
 	@IsProperty
 	@MapTo
 	@Dependent("startDate")
 	@Title(value = "Finish Date", desc = "The finish date of the employment period.")
+	@DateOnly
 	private Date finishDate;
 
 	@IsProperty
