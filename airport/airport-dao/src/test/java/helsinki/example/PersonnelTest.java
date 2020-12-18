@@ -157,7 +157,7 @@ public class PersonnelTest extends AbstractDaoTestCase {
      */
     @Override
     public boolean saveDataPopulationScriptToFile() {
-        return true;
+        return false;
     }
 
     /**
