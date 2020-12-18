@@ -140,6 +140,15 @@ public class EmploymentTest extends AbstractDaoTestCase {
     	// the right way of counting
     	assertTrue(co(Employment.class).exists(query));
     }
+    
+    @Test
+    public void RMD_has_contract_001_in_Jan_2019() {
+    	final UniversalConstantsForTesting constants = (UniversalConstantsForTesting) getInstance(IUniversalConstants.class);
+    	constants.setNow(dateTime("2019-01-01 11:30:00"));
+    	var person = co(Person.class).findByKeyAndFetch(fetch(Person.class).with("currEmployment").fetchModel(), "RMD");
+    	assertNotNull(person);
+    	assertEquals("001", person.getCurrEmployment().getContractNo());
+    }
 
     @Override
     public boolean saveDataPopulationScriptToFile() {

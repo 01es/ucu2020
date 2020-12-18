@@ -1,11 +1,15 @@
 package helsinki.personnel;
 
+import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.expr;
+import static ua.com.fielden.platform.entity.query.fluent.EntityQueryUtils.select;
+
 import helsinki.personnel.definers.PersonRequirendessForSupervisorDefiner;
 import helsinki.personnel.validators.PersonInitialsValidator;
 import helsinki.personnel.validators.PersonSupervisorValidator;
 import helsinki.security.tokens.persistent.Person_CanModify_user_Token;
 import ua.com.fielden.platform.entity.ActivatableAbstractEntity;
 import ua.com.fielden.platform.entity.DynamicEntityKey;
+import ua.com.fielden.platform.entity.annotation.Calculated;
 import ua.com.fielden.platform.entity.annotation.CompanionObject;
 import ua.com.fielden.platform.entity.annotation.CompositeKeyMember;
 import ua.com.fielden.platform.entity.annotation.Dependent;
@@ -18,12 +22,14 @@ import ua.com.fielden.platform.entity.annotation.KeyType;
 import ua.com.fielden.platform.entity.annotation.MapEntityTo;
 import ua.com.fielden.platform.entity.annotation.MapTo;
 import ua.com.fielden.platform.entity.annotation.Observable;
+import ua.com.fielden.platform.entity.annotation.Readonly;
 import ua.com.fielden.platform.entity.annotation.SkipEntityExistsValidation;
 import ua.com.fielden.platform.entity.annotation.Title;
 import ua.com.fielden.platform.entity.annotation.Unique;
 import ua.com.fielden.platform.entity.annotation.mutator.AfterChange;
 import ua.com.fielden.platform.entity.annotation.mutator.BeforeChange;
 import ua.com.fielden.platform.entity.annotation.mutator.Handler;
+import ua.com.fielden.platform.entity.query.model.ExpressionModel;
 import ua.com.fielden.platform.property.validator.EmailValidator;
 import ua.com.fielden.platform.reflection.TitlesDescsGetter;
 import ua.com.fielden.platform.security.Authorise;
@@ -103,6 +109,33 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
     @BeforeChange(@Handler(EmailValidator.class))
     private String email;
 
+    @IsProperty
+	@Readonly
+	@Calculated
+	@Title(value = "Current Employment", desc = "The current employment, if exists.")
+	private Employment currEmployment;
+	protected static final ExpressionModel currEmployment_ = expr().model(
+			select(Employment.class)
+			.where().prop("employee").eq().extProp("id")
+			.and().prop("startDate").le().now()
+			.and()
+			.begin()
+				.prop("finishDate").ge().now()
+				.or()
+				.prop("finishDate").isNull()
+			.end()    				
+			.model()).model();
+
+	@Observable
+	protected Person setCurrEmployment(final Employment currEmployment) {
+		this.currEmployment = currEmployment;
+		return this;
+	}
+
+	public Employment getCurrEmployment() {
+		return currEmployment;
+	}
+    
     @Override
     @Observable
     public Person setDesc(final String desc) {
