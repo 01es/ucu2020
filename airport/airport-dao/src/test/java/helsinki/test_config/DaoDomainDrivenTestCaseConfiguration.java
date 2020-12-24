@@ -2,6 +2,13 @@ package helsinki.test_config;
 
 import java.util.Properties;
 
+import com.google.inject.Injector;
+
+import helsinki.config.ApplicationDomain;
+import helsinki.dbsetup.HibernateSetup;
+import helsinki.filter.NoDataFilter;
+import helsinki.ioc.ApplicationServerModule;
+import helsinki.serialisation.SerialisationClassProvider;
 import ua.com.fielden.platform.entity.factory.EntityFactory;
 import ua.com.fielden.platform.entity.query.IdOnlyProxiedEntityTypeCache;
 import ua.com.fielden.platform.entity.query.metadata.DomainMetadata;
@@ -10,14 +17,8 @@ import ua.com.fielden.platform.ioc.NewUserNotifierMockBindingModule;
 import ua.com.fielden.platform.security.NoAuthorisation;
 import ua.com.fielden.platform.test.DbDrivenTestCase;
 import ua.com.fielden.platform.test.IDomainDrivenTestCaseConfiguration;
-
-import com.google.inject.Injector;
-
-import helsinki.config.ApplicationDomain;
-import helsinki.dbsetup.HibernateSetup;
-import helsinki.filter.NoDataFilter;
-import helsinki.ioc.ApplicationServerModule;
-import helsinki.serialisation.SerialisationClassProvider;
+import ua.com.fielden.platform.test.ioc.DatesForTesting;
+import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
 
 /**
  * Provides implementation of {@link IDomainDrivenTestCaseConfiguration} for testing purposes, which is mainly related to construction of appropriate IoC modules.
@@ -61,6 +62,7 @@ public final class DaoDomainDrivenTestCaseConfiguration implements IDomainDriven
                     NoDataFilter.class,
                     NoAuthorisation.class,
                     UniversalConstantsForTesting.class,
+                    DatesForTesting.class,
                     props);
     
     	    injector = new ApplicationInjectorFactory()

@@ -2,22 +2,23 @@ package helsinki.dev_mod.util;
 
 import java.util.Properties;
 
+import com.google.inject.Injector;
+
 import helsinki.config.ApplicationDomain;
 import helsinki.dbsetup.HibernateSetup;
 import helsinki.filter.NoDataFilter;
 import helsinki.ioc.ApplicationServerModule;
 import helsinki.serialisation.SerialisationClassProvider;
-
-import ua.com.fielden.platform.entity.query.metadata.DomainMetadata;
 import ua.com.fielden.platform.entity.factory.EntityFactory;
 import ua.com.fielden.platform.entity.query.IdOnlyProxiedEntityTypeCache;
+import ua.com.fielden.platform.entity.query.metadata.DomainMetadata;
 import ua.com.fielden.platform.ioc.ApplicationInjectorFactory;
 import ua.com.fielden.platform.ioc.NewUserNotifierMockBindingModule;
 import ua.com.fielden.platform.security.NoAuthorisation;
 import ua.com.fielden.platform.test.DbDrivenTestCase;
 import ua.com.fielden.platform.test.IDomainDrivenTestCaseConfiguration;
-
-import com.google.inject.Injector;
+import ua.com.fielden.platform.utils.DefaultDates;
+import ua.com.fielden.platform.utils.DefaultUniversalConstants;
 
 /**
  * Provides Helsinki Airport Asset Management specific implementation of {@link IDomainDrivenTestCaseConfiguration} to be used for creation and population of the target development database from within of IDE.
@@ -55,6 +56,8 @@ public final class DataPopulationConfig implements IDomainDrivenTestCaseConfigur
     	            SerialisationClassProvider.class, 
                     NoDataFilter.class,
                     NoAuthorisation.class, 
+                    DefaultUniversalConstants.class,
+                    DefaultDates.class,
     	            props);
     	    injector = new ApplicationInjectorFactory()
     	            .add(module)

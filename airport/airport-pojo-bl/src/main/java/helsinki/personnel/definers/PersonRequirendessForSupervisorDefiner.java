@@ -12,6 +12,9 @@ public class PersonRequirendessForSupervisorDefiner extends AbstractAfterChangeE
 	public void handle(final MetaProperty<Object> property, final Object value) {
 		final Person person = property.getEntity();
 		person.getProperty("aSupervisor").setRequired(!StringUtils.isEmpty(person.getEmployeeNo()) && !person.isSupervisor());
+		if (!person.isInitialising()) {
+			// change state
+		}
 	}
 
 }

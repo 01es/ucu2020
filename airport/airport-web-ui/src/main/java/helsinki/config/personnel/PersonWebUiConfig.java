@@ -5,7 +5,7 @@ import static helsinki.common.StandardActionsStyles.MASTER_CANCEL_ACTION_LONG_DE
 import static helsinki.common.StandardActionsStyles.MASTER_CANCEL_ACTION_SHORT_DESC;
 import static helsinki.common.StandardActionsStyles.MASTER_SAVE_ACTION_LONG_DESC;
 import static helsinki.common.StandardActionsStyles.MASTER_SAVE_ACTION_SHORT_DESC;
-
+import static ua.com.fielden.platform.web.PrefDim.mkDim;
 import static ua.com.fielden.platform.web.centre.api.context.impl.EntityCentreContextSelector.context;
 import static ua.com.fielden.platform.web.layout.api.impl.LayoutBuilder.cell;
 
@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import com.google.inject.Injector;
 
+import helsinki.common.LayoutComposer;
 import helsinki.common.StandardActions;
 import helsinki.main.menu.personnel.MiPerson;
 import helsinki.personnel.Person;
@@ -23,6 +24,7 @@ import ua.com.fielden.platform.web.centre.api.EntityCentreConfig;
 import ua.com.fielden.platform.web.centre.api.actions.EntityActionConfig;
 import ua.com.fielden.platform.web.centre.api.impl.EntityCentreBuilder;
 import ua.com.fielden.platform.web.interfaces.ILayout.Device;
+import ua.com.fielden.platform.web.PrefDim.Unit;
 import ua.com.fielden.platform.web.action.CentreConfigurationWebUiConfig.CentreConfigActions;
 import ua.com.fielden.platform.web.view.master.EntityMaster;
 import ua.com.fielden.platform.web.view.master.api.IMaster;
@@ -98,6 +100,11 @@ public class PersonWebUiConfig {
                     .withAction(standardEditAction).also()
                 .addProp("desc").minWidth(200).also()
                 .addProp("employeeNo").minWidth(70).also()
+                .addProp("currEmployment").minWidth(70).also()
+                .addProp("currEmployment.startDate").minWidth(70).also()
+                .addProp("currEmployment.finishDate").minWidth(70).also()
+                .addProp("currEmployment.salary").minWidth(70).also()
+                .addProp("currEmployment.contractDocument").minWidth(70).also()
                 .addProp("title").minWidth(200).also()
                 .addProp("aSupervisor").minWidth(70).also()
                 .addProp("supervisor").minWidth(70).also()
@@ -144,6 +151,7 @@ public class PersonWebUiConfig {
                 .setLayoutFor(Device.DESKTOP, Optional.empty(), layout)
                 .setLayoutFor(Device.TABLET, Optional.empty(), layout)
                 .setLayoutFor(Device.MOBILE, Optional.empty(), layout)
+                .withDimensions(mkDim(LayoutComposer.SIMPLE_TWO_COLUMN_MASTER_DIM_WIDTH, 480, Unit.PX))
                 .done();
 
         return new EntityMaster<>(Person.class, masterConfig, injector);

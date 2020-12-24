@@ -11,6 +11,7 @@ import ua.com.fielden.platform.basic.config.IApplicationDomainProvider;
 import ua.com.fielden.platform.domain.PlatformDomainTypes;
 import ua.com.fielden.platform.entity.AbstractEntity;
 import helsinki.personnel.Supervisor;
+import helsinki.personnel.Employment;
 
 /**
  * A class to register domain entities.
@@ -26,6 +27,7 @@ public class ApplicationDomain implements IApplicationDomainProvider {
 		entityTypes.addAll(PlatformDomainTypes.types);
 		add(Person.class);
 		add(Supervisor.class);
+		add(Employment.class);
 	}
 
 	private static void add(final Class<? extends AbstractEntity<?>> domainType) {
