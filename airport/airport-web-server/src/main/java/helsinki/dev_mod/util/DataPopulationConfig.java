@@ -17,6 +17,8 @@ import ua.com.fielden.platform.ioc.NewUserNotifierMockBindingModule;
 import ua.com.fielden.platform.security.NoAuthorisation;
 import ua.com.fielden.platform.test.DbDrivenTestCase;
 import ua.com.fielden.platform.test.IDomainDrivenTestCaseConfiguration;
+import ua.com.fielden.platform.test.ioc.DatesForTesting;
+import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
 import ua.com.fielden.platform.utils.DefaultDates;
 import ua.com.fielden.platform.utils.DefaultUniversalConstants;
 
@@ -56,8 +58,8 @@ public final class DataPopulationConfig implements IDomainDrivenTestCaseConfigur
     	            SerialisationClassProvider.class, 
                     NoDataFilter.class,
                     NoAuthorisation.class, 
-                    DefaultUniversalConstants.class,
-                    DefaultDates.class,
+                    UniversalConstantsForTesting.class,
+                    DatesForTesting.class,
     	            props);
     	    injector = new ApplicationInjectorFactory()
     	            .add(module)

@@ -21,8 +21,10 @@ import ua.com.fielden.platform.entity.AbstractEntity;
 import ua.com.fielden.platform.persistence.HibernateUtil;
 import ua.com.fielden.platform.security.user.User;
 import ua.com.fielden.platform.test.IDomainDrivenTestCaseConfiguration;
+import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
 import ua.com.fielden.platform.types.Money;
 import ua.com.fielden.platform.utils.DbUtils;
+import ua.com.fielden.platform.utils.IUniversalConstants;
 
 /**
  * This is a convenience class for (re-)creation of the development database and its population.
@@ -76,6 +78,9 @@ public class PopulateDb extends DomainDrivenDataPopulation {
     @Override
     protected void populateDomain() {
         LOGGER.info("Creating and populating the development database...");
+        System.out.println(getInstance(IUniversalConstants.class).getClass());
+        final UniversalConstantsForTesting constants = (UniversalConstantsForTesting) getInstance(IUniversalConstants.class);
+    	constants.setNow(dateTime("2019-01-01 11:30:00"));
         
         setupUser(User.system_users.SU, "helsinki");
         setupPerson(User.system_users.SU, "helsinki");

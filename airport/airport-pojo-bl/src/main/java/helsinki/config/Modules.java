@@ -1,15 +1,16 @@
 package helsinki.config;
 
-import helsinki.security.tokens.OtherModuleToken;
-import helsinki.security.tokens.UsersAndPersonnelModuleToken;
-import ua.com.fielden.platform.security.ISecurityToken;
-import ua.com.fielden.platform.utils.StreamUtils;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import helsinki.security.tokens.AssetModuleToken;
+import helsinki.security.tokens.OtherModuleToken;
+import helsinki.security.tokens.UsersAndPersonnelModuleToken;
+import ua.com.fielden.platform.security.ISecurityToken;
+import ua.com.fielden.platform.utils.StreamUtils;
 
 /**
  * Enumerates application modules and their configurations.
@@ -23,6 +24,10 @@ public enum Modules {
             UsersAndPersonnelModuleToken.class,
             "helsinki.personnel",
             "ua.com.fielden.platform.security.user"),
+    ASSETS("Assets", "A module to manage assets.",
+            "mainMenu:equipment", "#ee98fb", "#883997",
+            AssetModuleToken.class,
+            "helsinki.assets"),    
     OTHER("Other", "Entities that have not been or cannot be classified as belonging to one specific module.",
             "", "", "",
            OtherModuleToken.class,
